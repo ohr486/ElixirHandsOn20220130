@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  demo_app:
+    build:
+      context: .
+    command: mix phx.server
+    environment:
+      MIX_TEST_DB_HOST: demo_db
+    ports:
+      - 4000:4000
+    depends_on:
+      - demo_db
+    volumes:
+      - .:/app
+      - demo_app_node_modules:/app/assets/node_modules
+
+  demo_db:
+    image: postgres:9.6-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - demo_db_data:/var/lib/postgresql/data
+
+volumes:
+  demo_app_node_modules:
+  demo_db_data:
